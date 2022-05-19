@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "805703073560",
+    "project_id": "fireauthtut-e1deb",
+    "storage_bucket": "fireauthtut-e1deb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:805703073560:android:72f1ad45ce19f51659a86d",
+        "android_client_info": {
+          "package_name": "com.example.firebase_auth_tut"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "805703073560-9bnvglgp48neeucn32l60qafdku12it0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzy5VcY3hlcQ8Mu_5qVg5RXur_aQuHSu0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "805703073560-9bnvglgp48neeucn32l60qafdku12it0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "805703073560-chv584ntiii9d0is8r18mgh8jquuodg0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.firebaseAuthTut"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

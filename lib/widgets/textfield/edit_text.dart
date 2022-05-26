@@ -4,18 +4,23 @@ class EditText extends StatefulWidget {
   final String? hint;
   final String? initialValue;
   final Function(String? input) onTextChange;
-  final TextInputType? keyboardType;
+  final TextInputType? textInputType;
   final TextInputAction textInputAction;
   final bool enable;
+  final Widget? suffixIcon;
+  final bool obscureText;
+  final String? error;
 
-  const EditText(
-      {Key? key,
-      required this.onTextChange,
-      required this.hint,
-      this.initialValue,
-      this.keyboardType,
-      this.textInputAction = TextInputAction.next,
-      this.enable = true})
+  const EditText({Key? key,
+    required this.onTextChange,
+    required this.hint,
+    this.initialValue,
+    this.textInputType,
+    this.textInputAction = TextInputAction.next,
+    this.enable = true,
+    this.suffixIcon,
+    this.obscureText = false,
+    this.error})
       : super(key: key);
 
   @override
@@ -31,10 +36,14 @@ class _EditTextState extends State<EditText> {
       onChanged: widget.onTextChange,
       style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Theme.of(context).colorScheme.secondary),
       textInputAction: widget.textInputAction,
-      keyboardType: widget.keyboardType,
+      obscureText: widget.obscureText,
+      keyboardType: widget.textInputType,
       initialValue: widget.initialValue,
       decoration: InputDecoration(
         labelText: widget.hint,
+        suffixIcon: widget.suffixIcon,
+        errorText: widget.error,
+        errorStyle: Theme.of(context).textTheme.subtitle2?.copyWith(color: Theme.of(context).colorScheme.error),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );

@@ -22,6 +22,8 @@ class DatePickerFromField extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
+    if(kIsWeb) return _DatePickerOtherPlatformsFromFieldState();
+
     switch (defaultTargetPlatform) {
       case TargetPlatform.macOS:
       case TargetPlatform.iOS:
@@ -39,6 +41,12 @@ class _DatePickerOtherPlatformsFromFieldState extends State<DatePickerFromField>
   final _controller = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _controller.text = _toText(widget.initialValue) ?? "";
+  }
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: _pickDate,
@@ -46,7 +54,6 @@ class _DatePickerOtherPlatformsFromFieldState extends State<DatePickerFromField>
         controller: _controller,
         style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Theme.of(context).colorScheme.secondary),
         enabled: false,
-        initialValue: _toText(widget.initialValue),
         decoration: InputDecoration(
           labelText: widget.hint,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
@@ -70,6 +77,13 @@ class _DatePickerOtherPlatformsFromFieldState extends State<DatePickerFromField>
 
 class _DatePickerOtherIOSFromFieldState extends State<DatePickerFromField> {
   final _controller = TextEditingController();
+
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.text = _toText(widget.initialValue) ?? "";
+  }
 
   @override
   Widget build(BuildContext context) {

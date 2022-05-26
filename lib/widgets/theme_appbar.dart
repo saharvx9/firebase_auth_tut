@@ -4,12 +4,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+enum AppBarType {
+  idle,
+  clean
+}
+
 class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final double height;
+  final AppBarType type;
   late final ThemeCubit cubit;
 
-  ThemeAppBar({Key? key, required this.title, this.height = kToolbarHeight})
+  ThemeAppBar({Key? key, required this.title, this.height = kToolbarHeight, this.type = AppBarType.idle})
       : cubit = GetIt.I(),
         super(key: key);
 
@@ -17,6 +23,8 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Text(title),
+      backgroundColor: type == AppBarType.clean ? Colors.transparent : null,
+      elevation: type == AppBarType.clean ? 0 : 5,
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12.0),

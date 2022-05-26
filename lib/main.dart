@@ -40,6 +40,7 @@ class MyApp extends StatelessWidget {
       bloc: GetIt.I<ThemeCubit>(),
       builder: (context, state) {
         return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
           routeInformationParser: routes.routeInformationParser,
           routerDelegate: routes.routerDelegate,
           theme: AppTheme(state.brightness).theme,

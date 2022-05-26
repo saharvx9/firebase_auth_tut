@@ -21,9 +21,9 @@ class SizeConfig {
 
   SizeConfig._internal();
 
-  void init(BuildContext context) {
+  void init(BuildContext context,{bool fromMaterialApp = false}) {
     safeIsMobile = kIsWeb ? 0.8 : 1.0;
-    _mediaQueryData = MediaQuery.of(context);
+    _mediaQueryData = fromMaterialApp ? MediaQueryData.fromWindow(WidgetsBinding.instance.window) : MediaQuery.of(context);
     fullScreenHeight = _mediaQueryData.size.height;
     fullScreenWidth = _mediaQueryData.size.width;
     screenWidth = _mediaQueryData.size.width * safeIsMobile;

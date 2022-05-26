@@ -1,42 +1,50 @@
+import 'package:firebase_auth_tut/pages/bloc/theme/theme_cubit.dart';
+import 'package:firebase_auth_tut/routes.dart';
+import 'package:firebase_auth_tut/pages/app_theme.dart';
 import 'package:firebase_auth_tut/utils/size_config.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
+import 'application/getitmodules/bloc_binding_module.dart';
+import 'application/getitmodules/data_binding_module.dart';
+import 'application/getitmodules/repository_binding_module.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  runApp(const MyApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  _injectModules();
+  await GetIt.I.allReady();
+  final routes = AppRouter.buildRouts();
+  runApp(MyApp(routes: routes));
+}
+
+void _injectModules() {
+  DataBindingModule.providesModules();
+  RepositoryBindingModule.providesModules();
+  BlocBindingModule.providesModules();
 }
 
 class MyApp extends StatelessWidget {
-
-  const MyApp({Key? key}) : super(key: key);
+  final GoRouter routes;
+  const MyApp({Key? key,required this.routes}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SizeConfig().init(context);
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        fontFamily: 'Roboto',
-        textTheme: TextTheme(
-          titleLarge: TextStyle(fontSize: SizeConfig.fontLarge, fontWeight: FontWeight.bold),
-          titleMedium: TextStyle(fontSize: SizeConfig.fontMedium, fontWeight: FontWeight.w600),
-          bodyText1: TextStyle(fontSize: SizeConfig.fontNormal,fontWeight: FontWeight.w300)
-        ),
-        primarySwatch: Colors.blue,
-      ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    SizeConfig().init(context, fromMaterialApp: true);
+    return BlocBuilder<ThemeCubit, SelectedTheme>(
+      bloc: GetIt.I<ThemeCubit>(),
+      builder: (context, state) {
+        return MaterialApp.router(
+          routeInformationParser: routes.routeInformationParser,
+          routerDelegate: routes.routerDelegate,
+          theme: AppTheme(state.brightness).theme,
+        );
+      },
     );
   }
 }
-
-
-
-
-

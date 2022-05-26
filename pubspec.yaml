@@ -16,6 +16,10 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.4
 
+  # Firebase dependencies
+  firebase_core: ^1.17.0
+  firebase_auth: ^3.3.18
+
   # Get it - dependency injection (service locator)
   # https://pub.dev/packages/get_it
   get_it: ^7.2.0
@@ -32,8 +36,23 @@ dependencies:
   # https://pub.dev/packages/json_serializable
   json_annotation: ^4.5.0
 
-  firebase_core: ^1.17.0
-  firebase_auth: ^3.3.18
+  # Save in local memory tiny stuff
+  # https://pub.dev/packages/shared_preferences
+  shared_preferences: ^2.0.15
+
+  # load svg assets
+  # https://pub.dev/packages/flutter_svg
+  flutter_svg: ^1.1.0
+
+  # load image from device
+  # https://pub.dev/packages/image_picker
+  image_picker: ^0.8.5+3
+
+  # https://pub.dev/packages/intl
+  intl: ^0.17.0
+
+  simple_animations: ^4.0.2
+  rxdart: ^0.27.3
 
 dev_dependencies:
   build_runner: ^2.1.11
@@ -49,9 +68,8 @@ flutter:
 
   # Images folder decleatdeclarationion
   assets:
-   - assets/images/
-   -
- # Font declaration
+    - assets/images/
+    # Font declaration
   fonts:
     - family: Roboto
       fonts:

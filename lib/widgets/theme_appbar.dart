@@ -21,8 +21,9 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return AppBar(
-      title: Text(title),
+      title: Text(title,style: theme.textTheme.headline2?.copyWith(color: theme.colorScheme.primary),),
       backgroundColor: type == AppBarType.clean ? Colors.transparent : null,
       elevation: type == AppBarType.clean ? 0 : 5,
       actions: [

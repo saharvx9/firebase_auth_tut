@@ -10,6 +10,12 @@ class ErrorPage extends StatefulWidget {
 class _ErrorPageState extends State<ErrorPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Material(
+        child: Center(
+      child: Text(
+        "404 error",
+        style: TextStyle(color: Colors.red, fontSize: 50),
+      ),
+    ));
   }
 }

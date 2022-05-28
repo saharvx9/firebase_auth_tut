@@ -4,15 +4,14 @@ import 'package:firebase_auth_tut/pages/login/login_page.dart';
 import 'package:firebase_auth_tut/pages/register/registeration_page.dart';
 import 'package:firebase_auth_tut/pages/splash/splash_page.dart';
 import 'package:firebase_auth_tut/widgets/page_transtion.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 class AppRouter {
   static GoRouter buildRouts() => GoRouter(
           redirect: (state)=> state.path,
-          errorPageBuilder: (context, state) => PageTransition<void>(
-              child: const ErrorPage(), type: PageTransitionType.scale),
-          initialLocation: RegistrationPage.routeName,
+          errorBuilder: (context, state) => const ErrorPage(),
           routes: [
             GoRoute(
               path: SplashPage.routeName,
@@ -25,8 +24,9 @@ class AppRouter {
               path: RegistrationPage.routeName,
               pageBuilder: (context, state) => PageTransition<void>(
                   key: state.pageKey,
+                  transitionDuration: const Duration(seconds: 1),
                   child: RegistrationPage(cubit: GetIt.I(),),
-                  type: PageTransitionType.leftToRight),
+                  type: defaultTargetPlatform != TargetPlatform.android || defaultTargetPlatform != TargetPlatform.iOS ? PageTransitionType.leftToRight : PageTransitionType.none),
             ),
             GoRoute(
               path: LoginPage.routeName,

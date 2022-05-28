@@ -44,7 +44,9 @@ class RegistrationOtherPage extends StatelessWidget {
           )
       ),
       child: Center(
-        child: SvgPicture.asset("assets/images/fire_logo.svg"),
+        child: Hero(
+          tag: "tag_fire_logo",
+          child: SvgPicture.asset("assets/images/fire_logo.svg")),
       ),
     );
   }
@@ -56,7 +58,7 @@ class RegistrationOtherPage extends StatelessWidget {
         appBar: ThemeAppBar(title: "Register",type: AppBarType.clean,),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: SizeConfig.spacingExtraHorizontal,horizontal: SizeConfig.screenWidth * 0.04),
-          child: RegistrationBody(cubit: cubit),
+          child: SingleChildScrollView(child: RegistrationBody(cubit: cubit)),
         ),
       ),
     );

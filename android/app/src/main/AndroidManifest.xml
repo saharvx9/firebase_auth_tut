@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.firebase_auth_tut">
+    
+    <uses-permission android:name="android.permission.CAMERA"/>
    <application
         android:label="firebase_auth_tut"
         android:name="${applicationName}"

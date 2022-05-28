@@ -24,25 +24,18 @@ class DialogState {
 class AppDialog extends StatefulWidget {
 
   final DialogState state;
+  final Function()? onClick;
 
-  const AppDialog({Key? key, required this.state}) : super(key: key);
+  const AppDialog({Key? key, required this.state, this.onClick}) : super(key: key);
 
-  static Future<void> displayDialog(BuildContext context, DialogState state) {
+  static Future<void> displayDialog(BuildContext context, DialogState state,{Function()? onClick}) {
     return showGeneralDialog(
         context: context,
         barrierDismissible: true,
         barrierColor: Colors.black45,
         transitionDuration: const Duration(milliseconds: 300),
         barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
-        // transitionBuilder: (ctx, anim1, anim2, child) => BackdropFilter(
-        //       filter: ImageFilter.blur(
-        //           sigmaX: 3 * anim1.value, sigmaY: 3 * anim1.value),
-        //       child: FadeTransition(
-        //         opacity: anim1,
-        //         child: child,
-        //       ),
-        //     ),
-        pageBuilder: (_, anim1, anim2) => AppDialog(state: state));
+        pageBuilder: (_, anim1, anim2) => AppDialog(state: state,onClick: onClick));
   }
 
   @override
@@ -85,7 +78,10 @@ class _AppDialogState extends State<AppDialog> {
                   children: [
                     Text(widget.state.title,style: _theme.textTheme.headline2?.copyWith(color: _theme.colorScheme.secondary)),
                     Text(widget.state.subtitle,style: _theme.textTheme.subtitle2?.copyWith(color: _theme.colorScheme.secondary)),
-                    PrimaryButton(text: "ok", onClick: ()=> Navigator.pop(context))
+                    PrimaryButton(text: "ok", onClick: () {
+                      widget.onClick?.call();
+                      Navigator.pop(context);
+                    })
                   ],
                 ),
               )

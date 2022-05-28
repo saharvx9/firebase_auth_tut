@@ -1,10 +1,13 @@
+import 'package:firebase_auth_tut/pages/home/home_page.dart';
 import 'package:firebase_auth_tut/pages/register/bloc/registration_cubit.dart';
 import 'package:firebase_auth_tut/utils/size_config.dart';
 import 'package:firebase_auth_tut/widgets/app_dialog.dart';
+import 'package:firebase_auth_tut/widgets/pickimagedisplay/pick_display_image.dart';
 import 'package:firebase_auth_tut/widgets/textfield/edit_text.dart';
 import 'package:firebase_auth_tut/widgets/textfield/password_edit_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../widgets/button/progress_button.dart';
 import '../../widgets/gender_drop_down.dart';
@@ -20,18 +23,33 @@ class RegistrationBody extends StatelessWidget {
     return BlocListener<RegistrationCubit, RegistrationState>(
       bloc: cubit,
       listenWhen: (prev,current)=> current is DialogRegisterState,
-      listener: (context, state) {
-        print("show state: $state");
+      listener: (ctx, state) {
         switch(state.runtimeType) {
           case DialogRegisterState:
             final dialogState = (state as DialogRegisterState).state;
-            AppDialog.displayDialog(context, dialogState);
+            AppDialog.displayDialog(context, dialogState,onClick: (){
+              if(dialogState.type != DialogType.success) return;
+              context.go(HomePage.routeName);
+            });
             break;
         }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          BlocBuilder<RegistrationCubit, RegistrationState>(
+            bloc: cubit,
+            buildWhen: (prev,next) => next is ImageState,
+            builder: (context, state) {
+              final bytes = state is ImageState ? state.image : null;
+              return PickDisplayImage(
+                image: bytes,
+                size: SizeConfig.screenWidth * 0.15,
+                onPickImage: (image) => cubit.pickImage(image),
+              );
+            },
+          ),
+
           SizedBox(height: SizeConfig.spacingMediumVertical),
           //Email edit text
           BlocSelector<RegistrationCubit, RegistrationState, EmailInputState?>(
@@ -103,7 +121,7 @@ class RegistrationBody extends StatelessWidget {
             },
           ),
 
-          SizedBox(height: SizeConfig.spacingMediumVertical),
+          SizedBox(height: SizeConfig.spacingNormalVertical),
 
           BlocSelector<RegistrationCubit, RegistrationState, DateInputState?>(
             bloc: cubit,
@@ -124,9 +142,9 @@ class RegistrationBody extends StatelessWidget {
                 ? state.buttonState
                 : ButtonState.disable,
             builder: (context, state) {
-              return ProgressButton(state: ButtonState.enable, text: "Submit", onClick: () => cubit.signIn());
+              return ProgressButton(state: state, text: "Submit", onClick: () => cubit.signIn());
             },
-          )
+          ),
         ],
       ),
     );

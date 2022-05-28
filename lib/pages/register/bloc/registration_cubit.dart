@@ -1,11 +1,13 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire;
 import 'package:firebase_auth_tut/data/model/gender.dart';
 import 'package:firebase_auth_tut/data/model/user/user.dart';
 import 'package:firebase_auth_tut/widgets/app_dialog.dart';
 import 'package:firebase_auth_tut/widgets/button/progress_button.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rxdart/rxdart.dart';
@@ -15,6 +17,8 @@ part 'registration_state.dart';
 
 class RegistrationCubit extends Cubit<RegistrationState> {
   final _auth = fire.FirebaseAuth.instance;
+  final _storage = FirebaseStorage.instance.ref();
+  final _firestore = FirebaseFirestore.instance;
   final _emailState = StreamController<EmailInputState>.broadcast();
   final _userNameState = StreamController<UserNameInputState>.broadcast();
   final _passwordState = BehaviorSubject<PasswordInputState>();
@@ -22,6 +26,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   final _dateState = StreamController<DateInputState>.broadcast();
   final _genderState = StreamController<GenderState>.broadcast();
   final _compositeSubscription = CompositeSubscription();
+  Uint8List? _userProfileImage;
   User? _user;
 
   RegistrationCubit() : super(RegistrationInitial()) {
@@ -51,7 +56,6 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     })
         .map((valid) => valid ? ButtonState.enable : ButtonState.disable)
         .listen((state) {
-      print("show state: $state");
       emit(SubmitState(buttonState: state));
     }).addTo(_compositeSubscription);
   }
@@ -77,8 +81,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
         break;
       case RegistrationFieldType.confirmPassword:
         final state =
-            ConfirmPasswordInputState(input, _passwordState.value.input);
-        _confirmPasswordState.add(state);
+            ConfirmPasswordInputState(input, _passwordState.value.input);_confirmPasswordState.add(state);
         emit(state);
         break;
       case RegistrationFieldType.date:
@@ -94,12 +97,20 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     }
   }
 
-  signIn() async {
+  void pickImage(Uint8List image){
+    _userProfileImage = image;
+    emit(ImageState(image));
+  }
+
+  void signIn() async {
     emit(SubmitState(buttonState: ButtonState.loading));
     try {
       final email = _user!.email!;
       final password = _passwordState.value.input!;
       final userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      final id = userCredential.user!.uid;
+      if(_userProfileImage != null) _user?.imageUrl = await _uploadImage(_userProfileImage!,id);
+      await _firestore.collection("db/1/users/").doc(id).set(_user!.toJson());
       final dialogState = DialogState("Success","Welcome ${_user!.name!}",DialogType.error);
       emit(DialogRegisterState(dialogState));
     } catch (e) {
@@ -109,6 +120,11 @@ class RegistrationCubit extends Cubit<RegistrationState> {
     } finally {
       emit(SubmitState(buttonState: ButtonState.enable));
     }
+  }
+
+  Future<String> _uploadImage(Uint8List bytes,String? id){
+    return _storage.child("user_logo/$id").putData(bytes)
+    .then((task) => task.ref.getDownloadURL());
   }
 
   @override

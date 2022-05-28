@@ -58,9 +58,12 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
                   transform: Matrix4.translationValues(
                       _slideAnimation.value * SizeConfig.screenHeight * 0.3,
                       _slideAnimation.value * -SizeConfig.screenHeight * 0.3, 0),
-                  child: SvgPicture.asset("assets/images/fire_logo.svg",
-                      height: _sizeAnimation.value * SizeConfig.screenHeight * 0.3,
-                      width: _sizeAnimation.value * SizeConfig.screenHeight * 0.3));
+                  child: Hero(
+                    tag: "tag_fire_logo",
+                    child: SvgPicture.asset("assets/images/fire_logo.svg",
+                        height: _sizeAnimation.value * SizeConfig.screenHeight * 0.3,
+                        width: _sizeAnimation.value * SizeConfig.screenHeight * 0.3),
+                  ));
             },
           ),
         ),

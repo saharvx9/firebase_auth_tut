@@ -15,7 +15,7 @@ class User {
   @JsonKey(name: "gender")
   final Gender? gender;
   @JsonKey(name: "image_url")
-  final String? imageUrl;
+  String? imageUrl;
 
   User(this.id, this.name, this.email, this.date, this.gender, this.imageUrl);
 

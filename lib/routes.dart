@@ -25,14 +25,14 @@ class AppRouter {
               pageBuilder: (context, state) => PageTransition<void>(
                   key: state.pageKey,
                   transitionDuration: const Duration(seconds: 1),
-                  child: RegistrationPage(cubit: GetIt.I(),),
+                  child: RegistrationPage(cubit: GetIt.I()),
                   type: defaultTargetPlatform != TargetPlatform.android || defaultTargetPlatform != TargetPlatform.iOS ? PageTransitionType.leftToRight : PageTransitionType.none),
             ),
             GoRoute(
               path: LoginPage.routeName,
               pageBuilder: (context, state) => PageTransition<void>(
                   key: state.pageKey,
-                  child: const LoginPage(),
+                  child: LoginPage(cubit: GetIt.I()),
                   type: PageTransitionType.bottomToTop),
             ),
             GoRoute(

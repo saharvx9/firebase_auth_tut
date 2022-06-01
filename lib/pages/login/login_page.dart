@@ -1,4 +1,6 @@
 import 'package:firebase_auth_tut/pages/login/bloc/login_cubit.dart';
+import 'package:firebase_auth_tut/pages/login/platform/login_mobile_page.dart';
+import 'package:firebase_auth_tut/pages/login/platform/login_other_page.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,6 +16,19 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        return constraints.maxWidth > 550
+            ? LoginOtherPage(cubit: widget.cubit)
+            : LoginMobilePage(cubit: widget.cubit);
+      }
+    );
   }
+
+  @override
+  void dispose() {
+    widget.cubit.close();
+    super.dispose();
+  }
+
 }

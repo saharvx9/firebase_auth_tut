@@ -1,8 +1,10 @@
 import 'package:firebase_auth_tut/pages/home/home_page.dart';
+import 'package:firebase_auth_tut/pages/login/login_page.dart';
 import 'package:firebase_auth_tut/pages/register/bloc/registration_cubit.dart';
 import 'package:firebase_auth_tut/utils/size_config.dart';
 import 'package:firebase_auth_tut/widgets/app_dialog.dart';
 import 'package:firebase_auth_tut/widgets/pickimagedisplay/pick_display_image.dart';
+import 'package:firebase_auth_tut/widgets/socialauth/social_auth.dart';
 import 'package:firebase_auth_tut/widgets/textfield/edit_text.dart';
 import 'package:firebase_auth_tut/widgets/textfield/password_edit_text.dart';
 import 'package:flutter/material.dart';
@@ -26,28 +28,37 @@ class RegistrationBody extends StatelessWidget {
       listener: (ctx, state) {
         switch(state.runtimeType) {
           case DialogRegisterState:
-            final dialogState = (state as DialogRegisterState).state;
+            final dialogRegisterState = state as DialogRegisterState;
+            final dialogState = dialogRegisterState.state;
             AppDialog.displayDialog(context, dialogState,onClick: (){
-              if(dialogState.type != DialogType.success) return;
-              context.go(HomePage.routeName);
+              if(dialogState.type != DialogType.success && dialogRegisterState.id != null) return;
+              try{
+                context.goNamed(HomePage.routeName, params: {"id": "${dialogRegisterState.id}"});
+              }catch(e,s){
+                print("show error: $e\n stackTrace: $s");
+              }
             });
+            break;
+          default:
             break;
         }
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          BlocBuilder<RegistrationCubit, RegistrationState>(
-            bloc: cubit,
-            buildWhen: (prev,next) => next is ImageState,
-            builder: (context, state) {
-              final bytes = state is ImageState ? state.image : null;
+
+          SocialAuth(onUserFinish: (user)=> cubit.displayWelcomeUserDialog(user)),
+
+          StreamBuilder<ImageState>(
+            stream: cubit.stream.where((event) => event is ImageState).map((event) => event as ImageState),
+            builder: (context, snapshot) {
+              final bytes = snapshot.data?.image;
               return PickDisplayImage(
                 image: bytes,
-                size: SizeConfig.screenWidth * 0.15,
+                size: 150,
                 onPickImage: (image) => cubit.pickImage(image),
               );
-            },
+            }
           ),
 
           SizedBox(height: SizeConfig.spacingMediumVertical),
@@ -145,6 +156,10 @@ class RegistrationBody extends StatelessWidget {
               return ProgressButton(state: state, text: "Submit", onClick: () => cubit.signIn());
             },
           ),
+
+          TextButton(
+              child: Text("Already have a user",style: Theme.of(context).textTheme.button?.copyWith(color: Theme.of(context).colorScheme.primary,decoration: TextDecoration.underline)),
+              onPressed: () => context.push(LoginPage.routeName))
         ],
       ),
     );

@@ -10,6 +10,7 @@ import 'package:firebase_auth_tut/widgets/button/progress_button.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:firebase_auth_tut/utils/ext/string_ext.dart';
 
@@ -80,8 +81,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
         validField(type: RegistrationFieldType.confirmPassword, input: _confirmPasswordState.value.input);
         break;
       case RegistrationFieldType.confirmPassword:
-        final state =
-            ConfirmPasswordInputState(input, _passwordState.value.input);_confirmPasswordState.add(state);
+        final state = ConfirmPasswordInputState(input, _passwordState.value.input);_confirmPasswordState.add(state);
         emit(state);
         break;
       case RegistrationFieldType.date:
@@ -110,9 +110,9 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       final userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       final id = userCredential.user!.uid;
       if(_userProfileImage != null) _user?.imageUrl = await _uploadImage(_userProfileImage!,id);
-      await _firestore.collection("db/1/users/").doc(id).set(_user!.toJson());
-      final dialogState = DialogState("Success","Welcome ${_user!.name!}",DialogType.error);
-      emit(DialogRegisterState(dialogState));
+      await _firestore.collection(dotenv.env["collection_users"]!).doc(id).set(_user!.toJson());
+      final dialogState = DialogState("Success","Welcome ${_user!.name!}",DialogType.success,imageUrl: _user?.imageUrl);
+      emit(DialogRegisterState(dialogState,id: id));
     } catch (e) {
       if(kDebugMode) print("register failed: $e");
       final dialogState = DialogState("Error","something went wrong",DialogType.error);
@@ -123,7 +123,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   }
 
   Future<String> _uploadImage(Uint8List bytes,String? id){
-    return _storage.child("user_logo/$id").putData(bytes)
+    return _storage.child("${dotenv.env["collection_users"]!}$id").putData(bytes)
     .then((task) => task.ref.getDownloadURL());
   }
 
@@ -131,5 +131,10 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   Future<void> close() {
     _compositeSubscription.clear();
     return super.close();
+  }
+
+  displayWelcomeUserDialog(User user) {
+    final dialogState = DialogState("Success","Welcome ${user.name??""}",DialogType.success,imageUrl: user.imageUrl);
+    emit(DialogRegisterState(dialogState,id: user.id));
   }
 }

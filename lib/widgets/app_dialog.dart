@@ -1,7 +1,6 @@
-import 'dart:ui';
-
 import 'package:firebase_auth_tut/utils/size_config.dart';
 import 'package:firebase_auth_tut/widgets/button/primary_button.dart';
+import 'package:firebase_auth_tut/widgets/pickimagedisplay/pick_display_image.dart';
 import 'package:flutter/material.dart';
 
 enum DialogType {
@@ -16,9 +15,10 @@ class DialogState {
   final String title;
   final String subtitle;
   final DialogType type;
+  final String? imageUrl;
   IconData get icon => type.icon;
 
-  DialogState(this.title, this.subtitle, this.type);
+  DialogState(this.title, this.subtitle, this.type,{this.imageUrl});
 }
 
 class AppDialog extends StatefulWidget {
@@ -31,7 +31,7 @@ class AppDialog extends StatefulWidget {
   static Future<void> displayDialog(BuildContext context, DialogState state,{Function()? onClick}) {
     return showGeneralDialog(
         context: context,
-        barrierDismissible: true,
+        barrierDismissible: false,
         barrierColor: Colors.black45,
         transitionDuration: const Duration(milliseconds: 300),
         barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
@@ -64,13 +64,17 @@ class _AppDialogState extends State<AppDialog> {
                 flex: 5,
                 child: Container(
                   decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
-                      color: Theme.of(context).colorScheme.primary,
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10)),
+                    color: Theme.of(context).colorScheme.primary,
                   ),
-                  child: Center(child: Icon(widget.state.icon,size: 50,color: Colors.white,)),
+                  child: Center(
+                      child: widget.state.imageUrl != null
+                          ? Hero(tag: "dialog_image_tag", child: PickDisplayImage(size: 100, pickImage: false, image: widget.state.imageUrl))
+                          : Icon(widget.state.icon, size: 50, color: Colors.white,)),
                 ),
               ),
-
               Expanded(
                 flex: 4,
                 child: Column(

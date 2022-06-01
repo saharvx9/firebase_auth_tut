@@ -13,6 +13,7 @@ class SizeConfig {
   static late double safeBlockVertical;
   static late double fullScreenWidth;
   static late double fullScreenHeight;
+  static late double ratio;
   static double safeIsMobile = 1.0;
 
   static final SizeConfig _instance = SizeConfig._internal();
@@ -37,6 +38,7 @@ class SizeConfig {
     safeBlockVertical = ((screenHeight - _safeAreaVertical) / 100) * safeIsMobile;
     safeBlockHorizontal = safeBlockHorizontal > 4.0 ? 4.0 : safeBlockHorizontal;
     safeBlockVertical = safeBlockVertical > 8.0 ? 8.0 : safeBlockVertical;
+    ratio = screenHeight / screenWidth;
   }
 
   ///

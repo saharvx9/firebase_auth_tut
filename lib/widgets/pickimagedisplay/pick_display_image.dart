@@ -21,14 +21,15 @@ class PickDisplayImage extends StatelessWidget {
       : _cubit = PickImageDisplayCubit()..start(image),
         assert(
             pickImage == false && image != null ||
-            pickImage == true && onPickImage != null, true),
+                pickImage == true && onPickImage != null,
+            true),
         super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<PickImageDisplayCubit, PickImageDisplayState>(
       listener: (prev, state) {
-        if(state is FileImageState == false) return;
+        if (state is FileImageState == false) return;
         final image = (state as FileImageState).image;
         onPickImage?.call(image);
       },
@@ -94,8 +95,14 @@ class PickDisplayImage extends StatelessWidget {
   Widget _imageNetwork(String imageUrl) {
     return CachedNetworkImage(
       imageUrl: imageUrl,
-      imageBuilder: (context, imageProvider) =>
-          _circleParent(Image(image: imageProvider), size, context),
+      imageBuilder: (context, imageProvider) => _circleParent(
+          ClipOval(
+              child: Image(
+            image: imageProvider,
+            fit: BoxFit.fill,
+          )),
+          size,
+          context,withBorder: false),
       progressIndicatorBuilder: (context, url, progress) => Center(
         child: CircularProgressIndicator(
           value: progress.progress != 1 ? progress.progress : null,
@@ -106,14 +113,15 @@ class PickDisplayImage extends StatelessWidget {
     );
   }
 
-  Widget _circleParent(Widget child, double size, BuildContext context) {
+  Widget _circleParent(Widget child, double size, BuildContext context,{bool withBorder = true}) {
     final theme = Theme.of(context);
     return Container(
       height: size,
       width: size,
       decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: theme.colorScheme.secondary)),
+          border: withBorder ? Border.all(color: theme.colorScheme.secondary) : null
+      ),
       child: child,
     );
   }

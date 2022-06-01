@@ -1,16 +1,16 @@
-import 'package:firebase_auth_tut/pages/register/bloc/registration_cubit.dart';
-import 'package:firebase_auth_tut/utils/size_config.dart';
-import 'package:firebase_auth_tut/widgets/theme_appbar.dart';
+import 'package:firebase_auth_tut/pages/login/bloc/login_cubit.dart';
+import 'package:firebase_auth_tut/pages/login/login_body.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-import '../registration_body.dart';
+import '../../../utils/size_config.dart';
+import '../../../widgets/theme_appbar.dart';
 
+class LoginOtherPage extends StatelessWidget {
 
-class RegistrationOtherPage extends StatelessWidget {
-  final RegistrationCubit cubit;
+  final LoginCubit cubit;
 
-  const RegistrationOtherPage({Key? key, required this.cubit}) : super(key: key);
+  const LoginOtherPage({Key? key, required this.cubit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,15 +38,15 @@ class RegistrationOtherPage extends StatelessWidget {
               colors: [
                 colorTheme.surfaceVariant,
                 colorTheme.primary,
-                Colors.white
+                colorTheme.onPrimary,
                 // colorTheme.background
               ]
           )
       ),
       child: Center(
         child: Hero(
-          tag: "tag_fire_logo",
-          child: SvgPicture.asset("assets/images/fire_logo.svg")),
+            tag: "tag_fire_logo",
+            child: SvgPicture.asset("assets/images/fire_logo.svg")),
       ),
     );
   }
@@ -55,14 +55,12 @@ class RegistrationOtherPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SizeConfig.spacingSmallHorizontal),
       child: Scaffold(
-        appBar: ThemeAppBar(title: "Register",type: AppBarType.clean,),
+        appBar: ThemeAppBar(title: "Login",type: AppBarType.clean),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: SizeConfig.spacingExtraHorizontal,horizontal: SizeConfig.screenWidth * 0.04),
-          child: SingleChildScrollView(child: RegistrationBody(cubit: cubit)),
+          child: SingleChildScrollView(child: LoginBody(cubit: cubit)),
         ),
       ),
     );
   }
 }
-
-

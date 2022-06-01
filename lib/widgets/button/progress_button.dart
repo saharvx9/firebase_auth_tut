@@ -6,12 +6,16 @@ enum ButtonState { loading, disable, enable }
 class ProgressButton extends StatefulWidget {
   final ButtonState state;
   final Function() onClick;
-  final String text;
+  final String? text;
+  final Widget? child;
+  final Color? background;
 
   const ProgressButton({Key? key,
     required this.state,
     required this.onClick,
-    required this.text})
+    this.text,
+    this.child,
+    this.background})
       : super(key: key);
 
   @override
@@ -82,22 +86,23 @@ class _ProgressButtonState extends State<ProgressButton>
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-        animation: _buttonController, builder: (context, child) {
+    return AnimatedBuilder(animation: _buttonController, builder: (context, child) {
       BoxDecoration decoration;
       switch (widget.state) {
         case ButtonState.disable:
-          decoration = BoxDecoration(color: Theme.of(context).colorScheme.surface, borderRadius: _borderRadiusAnimation.value);
+          decoration = BoxDecoration(color: widget.background ?? Theme.of(context).colorScheme.surface, borderRadius: _borderRadiusAnimation.value);
           break;
         case ButtonState.enable:
         case ButtonState.loading:
-          decoration = BoxDecoration(color: Theme.of(context).colorScheme.primary, borderRadius: _borderRadiusAnimation.value);
+          decoration = BoxDecoration(color: widget.background ?? Theme.of(context).colorScheme.primary, borderRadius: _borderRadiusAnimation.value);
           break;
       }
 
+      double elevation;
       Widget buttonContent;
       switch (widget.state) {
         case ButtonState.loading:
+          elevation = 0;
           buttonContent = SizedBox(
             height: _buttonHeight,
             width: _widthAnimation.value,
@@ -110,12 +115,13 @@ class _ProgressButtonState extends State<ProgressButton>
           break;
         case ButtonState.disable:
         case ButtonState.enable:
+          elevation = 5;
           buttonContent = SizedBox(
             height: _buttonHeight,
             child: Center(
               child: Padding(
                   padding: const EdgeInsets.all(2),
-                  child: Text(widget.text, textAlign: TextAlign.center, style: Theme.of(context).textTheme.subtitle1,)),
+                  child: widget.child ?? Text(widget.text ?? "save", textAlign: TextAlign.center, style: Theme.of(context).textTheme.subtitle1,)),
             ),
           );
           break;
@@ -123,7 +129,7 @@ class _ProgressButtonState extends State<ProgressButton>
 
       return Material(
         color: Colors.transparent,
-        elevation: 0,
+        elevation: elevation,
         child: InkWell(
           onTap: widget.state == ButtonState.enable ? () {
             widget.onClick();

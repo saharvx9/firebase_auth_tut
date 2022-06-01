@@ -28,7 +28,7 @@ class AppTheme {
       colorScheme: ColorScheme(
           brightness: Brightness.dark,
           primary: Colors.amber,
-          onPrimary: Colors.white,
+          onPrimary: Colors.amber[300]!,
           primaryContainer: const Color(0xff676767),
           surface: const Color(0xff616161).withOpacity(0.4),
           onSurface: Colors.white,
@@ -37,6 +37,7 @@ class AppTheme {
           secondary: Colors.white,
           onSecondary: Colors.white38,
           error: Colors.red,
+          surfaceTint: const Color(0xff676767),
           surfaceVariant: Colors.amber[500],
           onError: Colors.orangeAccent.withOpacity(0.8)));
 
@@ -55,6 +56,7 @@ class AppTheme {
           onSecondary: Colors.black54,
           error: Colors.red,
           surfaceVariant: Colors.blue[800],
+          surfaceTint: const Color(0xff676767),
           onError: Colors.red.withOpacity(0.8)));
 
 

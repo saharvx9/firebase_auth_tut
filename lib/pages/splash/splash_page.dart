@@ -1,31 +1,25 @@
-import 'dart:math';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth_tut/pages/home/home_page.dart';
 import 'package:firebase_auth_tut/pages/register/registeration_page.dart';
 import 'package:firebase_auth_tut/pages/splash/splash_cubit.dart';
 import 'package:firebase_auth_tut/utils/size_config.dart';
-import 'package:firebase_auth_tut/widgets/theme_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../widgets/custom_switch.dart';
 
 class SplashPage extends StatefulWidget {
 
   static const routeName = "/";
-  const SplashPage({Key? key}) : super(key: key);
+  final SplashCubit cubit;
+  const SplashPage({Key? key, required this.cubit}) : super(key: key);
 
   @override
   State<SplashPage> createState() => _SplashPageState();
 }
 
 class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
-
-  final _bloc = GetIt.I<SplashCubit>();
 
   late final _animController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1000));
   late final _slideAnimation = Tween(begin: -2.0, end: 0.0).animate(CurvedAnimation(parent: _animController, curve: Curves.linearToEaseOut));
@@ -39,7 +33,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
     });
 
     _animController.addStatusListener((status) {
-      if(status == AnimationStatus.completed) _bloc.start();
+      if(status == AnimationStatus.completed) widget.cubit.start();
     });
   }
 
@@ -47,7 +41,7 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return BlocListener<SplashCubit, SplashState>(
-      bloc: _bloc,
+      bloc: widget.cubit,
       listener: (_, state) =>_navigate(state),
       child: Material(
         child: Center(
@@ -73,25 +67,25 @@ class _SplashPageState extends State<SplashPage> with TickerProviderStateMixin {
 
   _navigate(SplashState state) async {
     await Future.delayed(const Duration(milliseconds: 500)); /*delay for animation*/
-    late String path;
+    if (!mounted) return;
     switch(state){
       case SplashState.loggedIn:
-        path = HomePage.routeName;
+        final params = {"id": "${FirebaseAuth.instance.currentUser?.uid}"};
+        context.goNamed(HomePage.routeName, params: params);
         break;
       case SplashState.noUserExist:
-        path = RegistrationPage.routeName;
+        context.go(RegistrationPage.routeName);
         break;
       case SplashState.idle:
         //ignore still waiting for answer
         break;
     }
-    if (!mounted) return;
-    context.go(path);
   }
 
   @override
   void dispose() {
     super.dispose();
     _animController.dispose();
+    widget.cubit.close();
   }
 }

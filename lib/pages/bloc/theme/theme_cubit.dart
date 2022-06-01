@@ -24,6 +24,7 @@ class ThemeCubit extends Cubit<SelectedTheme> {
   }
 
   changeTheme(Brightness brightness) async {
+    print("change theme: $brightness");
     await _themeDataSource.setBrightness(brightness);
     emit(SelectedTheme(brightness));
   }

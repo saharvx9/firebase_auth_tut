@@ -1,4 +1,5 @@
 import 'package:firebase_auth_tut/data/model/gender.dart';
+import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'user.g.dart';
 
@@ -18,6 +19,13 @@ class User {
   String? imageUrl;
 
   User(this.id, this.name, this.email, this.date, this.gender, this.imageUrl);
+
+  String get dateStr => date != null ? DateFormat("dd/mm/yyyy").format(date!) : "";
+
+  factory User.fromJsonId(String id,Map<String, dynamic> json){
+    json["id"] = id;
+    return _$UserFromJson(json);
+  }
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
 

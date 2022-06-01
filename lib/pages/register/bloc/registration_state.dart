@@ -80,5 +80,7 @@ class SubmitState extends RegistrationState {
 
 class DialogRegisterState extends RegistrationState {
   final DialogState state;
-  DialogRegisterState(this.state);
+  final String? id;
+  DialogRegisterState(this.state, {this.id});
 }
+

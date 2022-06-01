@@ -21,9 +21,9 @@ class DatePickerFromField extends StatefulWidget {
       : super(key: key);
 
   @override
+  // ignore: no_logic_in_create_state
   State<StatefulWidget> createState() {
     if(kIsWeb) return _DatePickerOtherPlatformsFromFieldState();
-
     switch (defaultTargetPlatform) {
       case TargetPlatform.macOS:
       case TargetPlatform.iOS:
@@ -93,7 +93,6 @@ class _DatePickerOtherIOSFromFieldState extends State<DatePickerFromField> {
         controller: _controller,
         style: Theme.of(context).textTheme.subtitle1?.copyWith(color: Theme.of(context).colorScheme.secondary),
         enabled: false,
-        initialValue: _toText(widget.initialValue),
         decoration: InputDecoration(
           labelText: widget.hint,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),

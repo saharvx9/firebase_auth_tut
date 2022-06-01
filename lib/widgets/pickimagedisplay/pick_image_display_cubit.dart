@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_auth_tut/utils/ext/string_ext.dart';
 import 'package:meta/meta.dart';
+
+import '../../utils/imageapppicker/image_app_picker.dart';
 
 part 'pick_image_display_state.dart';
 
@@ -13,22 +13,19 @@ class PickImageDisplayCubit extends Cubit<PickImageDisplayState> {
 
   start(dynamic image){
     if(image == null) return;
-    switch(image.runtimeType){
-      case String:
-        emit(ImageUrlState(image));
-        break;
-      case Uint8List:
-        emit(FileImageState(image));
-        break;
-      default:
-        throw ArgumentError("image is not Uint8List of file or string instead oof it is: ${image.runtimeType}");
-    }
+    else if(image is String) emit(ImageUrlState(image));
+    else if(image is Uint8List) emit(FileImageState(image));
+    else throw ArgumentError("image is not Uint8List of file or string instead of it is: ${image.runtimeType}");
   }
 
 
   pickImage() async {
-    final xFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(xFile == null) return;
-    emit(FileImageState(await xFile.readAsBytes()));
+    try{
+      final bytes = await ImageAppPicker().pickFile();
+      if(bytes == null) return;
+      emit(FileImageState(bytes));
+    }catch(e,s){
+      print("failed pick image error: $e\nstackTrace: $s");
+    }
   }
 }

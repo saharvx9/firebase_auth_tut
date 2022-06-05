@@ -38,7 +38,7 @@ class LoginOtherPage extends StatelessWidget {
               colors: [
                 colorTheme.surfaceVariant,
                 colorTheme.primary,
-                colorTheme.onPrimary,
+                Colors.white
                 // colorTheme.background
               ]
           )
@@ -55,7 +55,7 @@ class LoginOtherPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SizeConfig.spacingSmallHorizontal),
       child: Scaffold(
-        appBar: ThemeAppBar(title: "Login",type: AppBarType.clean),
+        appBar: const ThemeAppBar(title: "Login",type: AppBarType.clean),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: SizeConfig.spacingExtraHorizontal,horizontal: SizeConfig.screenWidth * 0.04),
           child: SingleChildScrollView(child: LoginBody(cubit: cubit)),

@@ -13,6 +13,7 @@ enum RegistrationFieldType {
 abstract class RegistrationState {}
 
 class RegistrationInitial extends RegistrationState {}
+
 class InputValidationState<T> extends RegistrationState {
   final T? input;
   String? _error;

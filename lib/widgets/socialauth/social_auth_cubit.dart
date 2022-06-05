@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth_tut/data/model/user/user.dart' as appUser;
 import 'package:firebase_auth_tut/widgets/button/progress_button.dart';
+import 'package:firebase_auth_tut/widgets/dialog/dialog_state.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,8 +45,11 @@ class SocialAuthCubit extends Cubit<SocialAuthState> {
       );
       emit(UserState(await _loginWithCredential(credential)));
     } catch(e,s){
-      print("show error: $e");
-      print("show stack trace: $s");
+      if (kDebugMode) {
+        print("show error: $e");
+        print("show stack trace: $s");
+      }
+      emit(ErrorSocialAuthState(error: e,stackTrace: s));
     } finally {
       emit(GoogleAuthState(ButtonState.enable));
     }
@@ -63,8 +67,11 @@ class SocialAuthCubit extends Cubit<SocialAuthState> {
       await _firestore.collection(dotenv.env["collection_users"]!).doc(user.id).set(user.toJson());
       emit(UserState(user));
     } catch (e, s) {
-      print("show error: $e");
-      print("show stack trace: $s");
+      if (kDebugMode) {
+        print("show error: $e");
+        print("show stack trace: $s");
+      }
+      emit(ErrorSocialAuthState(error: e,stackTrace: s));
     } finally {
       emit(GoogleAuthState(ButtonState.enable));
     }

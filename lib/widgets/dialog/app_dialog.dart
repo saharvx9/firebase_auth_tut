@@ -3,23 +3,9 @@ import 'package:firebase_auth_tut/widgets/button/primary_button.dart';
 import 'package:firebase_auth_tut/widgets/pickimagedisplay/pick_display_image.dart';
 import 'package:flutter/material.dart';
 
-enum DialogType {
-  error(Icons.error_outline),
-  success(Icons.verified_outlined);
+import 'dialog_state.dart';
 
-  final IconData icon;
-  const DialogType(this.icon);
 
-}
-class DialogState {
-  final String title;
-  final String subtitle;
-  final DialogType type;
-  final String? imageUrl;
-  IconData get icon => type.icon;
-
-  DialogState(this.title, this.subtitle, this.type,{this.imageUrl});
-}
 
 class AppDialog extends StatefulWidget {
 

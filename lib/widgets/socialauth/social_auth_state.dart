@@ -33,3 +33,12 @@ class UserState extends SocialAuthState {
   UserState(this.user);
 }
 
+class ErrorSocialAuthState extends SocialAuthState{
+  final dynamic error;
+  final StackTrace? stackTrace;
+
+  DialogState get dialogState => SocialErrorState(error);
+
+  ErrorSocialAuthState({this.error, this.stackTrace});
+}
+

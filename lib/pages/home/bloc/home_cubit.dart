@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart' as fire;
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth_tut/data/model/user/user.dart';
-import 'package:firebase_auth_tut/widgets/app_dialog.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:meta/meta.dart';
+import '../../../widgets/dialog/dialog_state.dart';
 
 part 'home_state.dart';
 
@@ -13,7 +13,6 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(LoadingState());
 
   start(String uid) async {
-    print("bloc $hashCode");
     try{
       final user = await _fireStore
           .collection(dotenv.env["collection_users"]!)
@@ -23,11 +22,22 @@ class HomeCubit extends Cubit<HomeState> {
       emit(UserState(user));
     }catch(e,s){
       if (kDebugMode) print("error: $e\nstacktrace: $s");
-      emit(ErrorState(DialogState("Error","failed load user try to refresh",DialogType.error)));
+      emit(ErrorState(FailedLoadUserState()));
     }
   }
 
-  logOut(){
+  displayLogoutDialog(){
+    emit(LogOutAwareDialog(BeforeLogOutState()));
+  }
 
+  logOut() async {
+    try {
+      print("start logOut");
+      await auth.FirebaseAuth.instance.signOut();
+      emit(LogOutState());
+    } catch(e) {
+      print("show error: $e");
+      emit(ErrorState(OOopsSomethingWentWrong()));
+    }
   }
 }

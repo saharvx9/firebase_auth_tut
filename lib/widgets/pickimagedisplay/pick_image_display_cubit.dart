@@ -11,8 +11,9 @@ class PickImageDisplayCubit extends Cubit<PickImageDisplayState> {
   PickImageDisplayCubit() : super(PickImageDisplayInitial());
 
 
-  start(dynamic image){
-    if(image == null) return;
+  start(dynamic image, bool pickImage){
+    if(image == null && pickImage) return;
+    else if(image == null && !pickImage) emit(EmptyImageState());
     else if(image is String) emit(ImageUrlState(image));
     else if(image is Uint8List) emit(FileImageState(image));
     else throw ArgumentError("image is not Uint8List of file or string instead of it is: ${image.runtimeType}");

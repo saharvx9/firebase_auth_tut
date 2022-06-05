@@ -14,7 +14,7 @@ class LoginMobilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ThemeAppBar(title: "Login",),
+      appBar: const ThemeAppBar(title: "Login",),
       body: SingleChildScrollView(
         padding: EdgeInsetsDirectional.all(SizeConfig.spacingNormalVertical),
         child: LoginBody(cubit: cubit),

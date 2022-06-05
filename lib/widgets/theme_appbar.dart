@@ -1,5 +1,6 @@
-import 'package:firebase_auth_tut/pages/bloc/theme/theme_cubit.dart';
-import 'package:firebase_auth_tut/widgets/theme_switch.dart';
+import 'package:firebase_auth_tut/widgets/switch/themeswitch/theme_cubit.dart';
+import 'package:firebase_auth_tut/widgets/switch/custom_switch.dart';
+import 'package:firebase_auth_tut/widgets/switch/themeswitch/theme_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -13,11 +14,13 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final double height;
   final AppBarType type;
-  late final ThemeCubit cubit;
 
-  ThemeAppBar({Key? key, required this.title, this.height = kToolbarHeight, this.type = AppBarType.idle})
-      : cubit = GetIt.I(),
-        super(key: key);
+  const ThemeAppBar(
+      {Key? key,
+      required this.title,
+      this.height = kToolbarHeight,
+      this.type = AppBarType.idle})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +32,9 @@ class ThemeAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12.0),
-          child: _themeSwitch(),
+          child: ThemeSwitch(),
         )
       ],
-    );
-  }
-
-  Widget _themeSwitch() {
-    return BlocBuilder<ThemeCubit, SelectedTheme>(
-      bloc: cubit,
-      builder: (context, state) {
-        return ThemeSwitch(initialValue: state.brightness, onCheck: (value) => cubit.changeTheme(value));
-      },
     );
   }
 

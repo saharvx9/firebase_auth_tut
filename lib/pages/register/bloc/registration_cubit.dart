@@ -5,14 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire;
 import 'package:firebase_auth_tut/data/model/gender.dart';
 import 'package:firebase_auth_tut/data/model/user/user.dart';
-import 'package:firebase_auth_tut/widgets/app_dialog.dart';
+import 'package:firebase_auth_tut/utils/ext/string_ext.dart';
 import 'package:firebase_auth_tut/widgets/button/progress_button.dart';
+import 'package:firebase_auth_tut/widgets/dialog/dialog_state.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:firebase_auth_tut/utils/ext/string_ext.dart';
 
 part 'registration_state.dart';
 
@@ -56,6 +56,7 @@ class RegistrationCubit extends Cubit<RegistrationState> {
           genderState.valid;
     })
         .map((valid) => valid ? ButtonState.enable : ButtonState.disable)
+        .distinct()
         .listen((state) {
       emit(SubmitState(buttonState: state));
     }).addTo(_compositeSubscription);
@@ -111,12 +112,11 @@ class RegistrationCubit extends Cubit<RegistrationState> {
       final id = userCredential.user!.uid;
       if(_userProfileImage != null) _user?.imageUrl = await _uploadImage(_userProfileImage!,id);
       await _firestore.collection(dotenv.env["collection_users"]!).doc(id).set(_user!.toJson());
-      final dialogState = DialogState("Success","Welcome ${_user!.name!}",DialogType.success,imageUrl: _user?.imageUrl);
+      final dialogState = WelcomeState(_user?.name, _user?.imageUrl);
       emit(DialogRegisterState(dialogState,id: id));
     } catch (e) {
       if(kDebugMode) print("register failed: $e");
-      final dialogState = DialogState("Error","something went wrong",DialogType.error);
-      emit(DialogRegisterState(dialogState));
+      emit(DialogRegisterState(OOopsSomethingWentWrong()));
     } finally {
       emit(SubmitState(buttonState: ButtonState.enable));
     }
@@ -134,7 +134,6 @@ class RegistrationCubit extends Cubit<RegistrationState> {
   }
 
   displayWelcomeUserDialog(User user) {
-    final dialogState = DialogState("Success","Welcome ${user.name??""}",DialogType.success,imageUrl: user.imageUrl);
-    emit(DialogRegisterState(dialogState,id: user.id));
+    emit(DialogRegisterState(WelcomeState(user.name, user.imageUrl),id: user.id));
   }
 }

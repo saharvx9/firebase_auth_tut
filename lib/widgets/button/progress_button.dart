@@ -9,13 +9,15 @@ class ProgressButton extends StatefulWidget {
   final String? text;
   final Widget? child;
   final Color? background;
+  final Color? backgroundDisable;
 
   const ProgressButton({Key? key,
     required this.state,
     required this.onClick,
     this.text,
     this.child,
-    this.background})
+    this.background,
+    this.backgroundDisable})
       : super(key: key);
 
   @override
@@ -90,14 +92,13 @@ class _ProgressButtonState extends State<ProgressButton>
       BoxDecoration decoration;
       switch (widget.state) {
         case ButtonState.disable:
-          decoration = BoxDecoration(color: widget.background ?? Theme.of(context).colorScheme.surface, borderRadius: _borderRadiusAnimation.value);
+          decoration = BoxDecoration(color: widget.backgroundDisable ?? Theme.of(context).colorScheme.surfaceTint, borderRadius: _borderRadiusAnimation.value);
           break;
         case ButtonState.enable:
         case ButtonState.loading:
           decoration = BoxDecoration(color: widget.background ?? Theme.of(context).colorScheme.primary, borderRadius: _borderRadiusAnimation.value);
           break;
       }
-
       double elevation;
       Widget buttonContent;
       switch (widget.state) {
@@ -127,21 +128,24 @@ class _ProgressButtonState extends State<ProgressButton>
           break;
       }
 
-      return Material(
-        color: Colors.transparent,
-        elevation: elevation,
-        child: InkWell(
-          onTap: widget.state == ButtonState.enable ? () {
-            widget.onClick();
-          } : null,
+      return SizedBox(
+        width: _widthAnimation.value,
+        child: Material(
+          color: Colors.transparent,
           borderRadius: _borderRadiusAnimation.value,
-          child: Center(
-            child: Ink(
-              width: _widthAnimation.value,
-              decoration: decoration,
-              child: FadeTransition(
-                  opacity: _opacityAnimation,
-                  child: buttonContent),
+          elevation: elevation,
+          child: InkWell(
+            onTap: widget.state == ButtonState.enable ? () {
+              widget.onClick();
+            } : null,
+            borderRadius: _borderRadiusAnimation.value,
+            child: Center(
+              child: Ink(
+                decoration: decoration,
+                child: FadeTransition(
+                    opacity: _opacityAnimation,
+                    child: buttonContent),
+              ),
             ),
           ),
         ),

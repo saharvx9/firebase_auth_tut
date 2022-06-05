@@ -1,19 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_auth_tut/pages/bloc/theme/theme_cubit.dart';
 import 'package:firebase_auth_tut/app_routes.dart';
 import 'package:firebase_auth_tut/pages/app_theme.dart';
 import 'package:firebase_auth_tut/utils/size_config.dart';
+import 'package:firebase_auth_tut/widgets/switch/themeswitch/theme_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+
 import 'application/getitmodules/bloc_binding_module.dart';
 import 'application/getitmodules/data_binding_module.dart';
 import 'application/getitmodules/repository_binding_module.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -30,7 +30,6 @@ void main() async {
       xfbml: true,
       version: "v13.0",
     );
-    print("init facebook web");
   }
 
   final routes = AppRouter.buildRouts();
@@ -64,3 +63,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+//cors
+//https://stackoverflow.com/a/66617476/9184066

@@ -1,3 +1,4 @@
+import 'package:firebase_auth_tut/utils/ext/string_ext.dart';
 import 'package:flutter/material.dart';
 
 class EditText extends StatefulWidget {
@@ -28,6 +29,7 @@ class EditText extends StatefulWidget {
 }
 
 class _EditTextState extends State<EditText> {
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(

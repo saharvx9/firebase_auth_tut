@@ -1,4 +1,4 @@
-import 'package:firebase_auth_tut/pages/bloc/theme/theme_cubit.dart';
+import 'package:firebase_auth_tut/widgets/switch/themeswitch/theme_cubit.dart';
 import 'package:firebase_auth_tut/pages/home/bloc/home_cubit.dart';
 import 'package:firebase_auth_tut/pages/login/bloc/login_cubit.dart';
 import 'package:firebase_auth_tut/pages/splash/splash_cubit.dart';

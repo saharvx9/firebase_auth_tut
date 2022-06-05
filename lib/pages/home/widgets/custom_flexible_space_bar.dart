@@ -8,10 +8,13 @@ class CustomFlexibleSpaceBar extends StatefulWidget {
   final double expandedHeight;
   final double maxSizeImage;
   final double minSizeImage;
+  final Color? backgroundColor;
   final String? title;
   final TextStyle? style;
   final Widget? action;
   final String? imageUrl;
+  final bool innerBoxIsScrolled;
+  final Function(double ratio)? onRatioChange;
 
   const CustomFlexibleSpaceBar(
       {Key? key,
@@ -22,7 +25,10 @@ class CustomFlexibleSpaceBar extends StatefulWidget {
       this.minSizeImage = 30,
       this.title,
       this.style,
-      this.action})
+      this.action,
+      this.innerBoxIsScrolled = false,
+      this.onRatioChange,
+      this.backgroundColor})
       : assert(expandedHeight > maxSizeImage && collapsedHeight > minSizeImage),
         super(key: key);
 
@@ -31,7 +37,6 @@ class CustomFlexibleSpaceBar extends StatefulWidget {
 }
 
 class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
-  double _extentRatio = 0;
   double extYAxisOff = 30.0;
   Color? _color;
 
@@ -39,32 +44,43 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
   Widget build(BuildContext context) {
     return SliverAppBar(
       expandedHeight: widget.expandedHeight,
-      elevation: 5,
       centerTitle: true,
       floating: false,
+      elevation: 0,
       pinned: true,
+      backgroundColor: widget.backgroundColor,
+      forceElevated: widget.innerBoxIsScrolled,
       flexibleSpace: LayoutBuilder(builder: (ctx, constraints) {
         final diff = widget.maxSizeImage - widget.minSizeImage;
 
-        _extentRatio = (constraints.biggest.height - widget.collapsedHeight) / (widget.expandedHeight - widget.collapsedHeight);
-        var ratio = _extentRatio;
-        if (_extentRatio < 0.17) {
+        double extentRatio = (constraints.biggest.height - widget.collapsedHeight) / (widget.expandedHeight - widget.collapsedHeight);
+        var ratio = extentRatio;
+        if (extentRatio < 0.17) {
           ratio = 0;
-        } else if (_extentRatio >= 1) {
+        } else if (extentRatio >= 1) {
           ratio = 1;
         }
+        widget.onRatioChange?.call(ratio);
         double xAxisOffset1 = (ratio * 160) - 160;
+        double yAxisOffset1 = (ratio * -30) + 5;
         return FlexibleSpaceBar(
           collapseMode: CollapseMode.pin,
           centerTitle: true,
           title: Stack(
-            alignment: Alignment.center,
+            alignment: Alignment.bottomCenter,
             children: [
               Container(
-                transform: Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, xAxisOffset1, 5, 0, 1),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
+                transform: Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, xAxisOffset1, yAxisOffset1, 0, 1),
+                decoration:  const BoxDecoration(
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black45,
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ]
                 ),
                 child: PickDisplayImage(
                   image: widget.imageUrl,
@@ -76,7 +92,7 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
               if(widget.title.isNotNullOrEmpty)...[
                 Container(
                   transform: Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
-                      xAxisOffset1 + 70, 5, 0, 1),
+                      xAxisOffset1 + 70, yAxisOffset1, 0, 1),
                   child: Opacity(
                     opacity: (ratio) * -1 + 1,
                     child: Text(widget.title!,style: widget.style,)
@@ -85,11 +101,12 @@ class _CustomFlexibleSpaceBarState extends State<CustomFlexibleSpaceBar> {
               ],
 
               if(widget.action != null)...[
-                Container(
-                  transform: Matrix4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, kIsWeb ? 210 :160, 5, 0, 1),
-                  child: SizedBox(
-                    child: Opacity(
-                      opacity: (ratio) *-1 + 1,
+                Align(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  child: Opacity(
+                    opacity: (ratio) * -1 + 1,
+                    child: Padding(
+                      padding: const EdgeInsetsDirectional.only(end: 20),
                       child: widget.action,
                     ),
                   ),

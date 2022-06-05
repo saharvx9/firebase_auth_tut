@@ -5,27 +5,35 @@ import 'package:simple_animations/simple_animations.dart';
 
 enum _SwitchProps { paddingLeft, color, icon, rotation }
 
-class ThemeSwitch extends StatefulWidget {
-  final Brightness initialValue;
-  final Function(Brightness value) onCheck;
+class CustomSwitch extends StatefulWidget {
+  final bool initialValue;
+  final IconData firstIcon;
+  final IconData secondIcon;
+  final Function(bool value) onCheck;
 
-  const ThemeSwitch(
-      {Key? key, this.initialValue = Brightness.light, required this.onCheck})
+  const CustomSwitch(
+      {Key? key,
+      required this.initialValue,
+      required this.onCheck,
+      this.firstIcon = Icons.dark_mode,
+      this.secondIcon = Icons.light_mode})
       : super(key: key);
 
   @override
-  State<ThemeSwitch> createState() => _ThemeSwitchState();
+  State<CustomSwitch> createState() => _CustomSwitchState();
 }
 
-class _ThemeSwitchState extends State<ThemeSwitch> {
+class _CustomSwitchState extends State<CustomSwitch> {
   late var _checked = widget.initialValue;
-  late var _controller = _checked == Brightness.light ? CustomAnimationControl.playFromStart : CustomAnimationControl.playReverse;
+  late var _controller = _checked
+      ? CustomAnimationControl.playFromStart
+      : CustomAnimationControl.playReverse;
 
   late final _tween = MultiTween<_SwitchProps>()
     ..add(_SwitchProps.paddingLeft, Tween(begin: 0.0, end: 20.0), const Duration(milliseconds: 500))
     ..add(_SwitchProps.color, ColorTween(begin: Theme.of(context).backgroundColor, end: Colors.yellow.shade700), const Duration(milliseconds: 500))
-    ..add(_SwitchProps.icon, ConstantTween(Icons.dark_mode), const Duration(milliseconds: 250))
-    ..add(_SwitchProps.icon, ConstantTween(Icons.light_mode), const Duration(milliseconds: 250))
+    ..add(_SwitchProps.icon, ConstantTween(widget.firstIcon), const Duration(milliseconds: 250))
+    ..add(_SwitchProps.icon, ConstantTween(widget.secondIcon), const Duration(milliseconds: 250))
     ..add(_SwitchProps.rotation, Tween(begin: -2 * pi, end: 0.0), const Duration(milliseconds: 500));
 
   @override
@@ -39,12 +47,13 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
     );
   }
 
-  Widget _buildCheckbox(context, child, MultiTweenValues<_SwitchProps> animation) {
+  Widget _buildCheckbox(
+      context, child, MultiTweenValues<_SwitchProps> animation) {
     return GestureDetector(
       onTap: () {
-        _checked = _checked == Brightness.light ? Brightness.dark : Brightness.light;
+        _checked = !_checked;
         setState(() {
-          _controller = _checked == Brightness.light
+          _controller = _checked
               ? CustomAnimationControl.playFromStart
               : CustomAnimationControl.playReverse;
         });
@@ -64,7 +73,8 @@ class _ThemeSwitchState extends State<ThemeSwitch> {
               child: Transform.rotate(
                 angle: animation.get(_SwitchProps.rotation),
                 child: Container(
-                  decoration: _innerBoxDecoration(animation.get(_SwitchProps.color)),
+                  decoration:
+                      _innerBoxDecoration(animation.get(_SwitchProps.color)),
                   width: 20,
                   child: Center(
                       child: Icon(

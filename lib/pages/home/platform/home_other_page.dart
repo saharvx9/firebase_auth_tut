@@ -13,13 +13,12 @@ class HomeOtherPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: ThemeAppBar(title: "Welcome",),
+      appBar: const ThemeAppBar(title: "Welcome",),
       body: Padding(
         padding: EdgeInsets.all(SizeConfig.spacingExtraVertical),
         child: Row(
           children: [
             Expanded(child: _firstInfo(theme)),
-
             Expanded(child: _secondInfo(theme)),
           ],
         ),

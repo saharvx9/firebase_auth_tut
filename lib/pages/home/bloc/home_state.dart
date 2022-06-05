@@ -16,3 +16,10 @@ class ErrorState extends HomeState {
   final DialogState dialogState;
   ErrorState(this.dialogState);
 }
+
+class LogOutAwareDialog extends HomeState {
+  final DialogState dialogState;
+  LogOutAwareDialog(this.dialogState);
+}
+
+class LogOutState extends HomeState {}

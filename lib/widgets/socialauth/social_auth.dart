@@ -1,6 +1,7 @@
 import 'package:firebase_auth_tut/data/model/user/user.dart';
 import 'package:firebase_auth_tut/utils/size_config.dart';
 import 'package:firebase_auth_tut/widgets/button/progress_button.dart';
+import 'package:firebase_auth_tut/widgets/dialog/app_dialog.dart';
 import 'package:firebase_auth_tut/widgets/socialauth/social_auth_cubit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,6 @@ class SocialAuth extends StatefulWidget {
   SocialAuth({Key? key, required this.onUserFinish})
       : cubit = SocialAuthCubit(),
         super(key: key);
-
-
 
   /// Why ignore?!
   /// From the docs: https://dart-lang.github.io/linter/lints/no_logic_in_create_state.html
@@ -46,9 +45,18 @@ class _SupportSocialAuthState extends State<SocialAuth> {
       bloc: widget.cubit,
       listenWhen: (prev,current)=> current is UserState,
       listener: (_, state) {
-        if(state is UserState == false) return;
-        final user = (state as UserState).user;
-        widget.onUserFinish(user);
+        switch(state.runtimeType){
+          case UserState:
+            final user = (state as UserState).user;
+            widget.onUserFinish(user);
+            break;
+          case ErrorSocialAuthState:
+            final error = state as ErrorSocialAuthState;
+            AppDialog.displayDialog(context, error.dialogState);
+            break;
+          default:
+            break;
+        }
       },
       child: Padding(
         padding: EdgeInsets.symmetric(vertical: SizeConfig.spacingMediumHorizontal),

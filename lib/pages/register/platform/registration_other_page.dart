@@ -55,7 +55,7 @@ class RegistrationOtherPage extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: SizeConfig.spacingSmallHorizontal),
       child: Scaffold(
-        appBar: ThemeAppBar(title: "Register",type: AppBarType.clean,),
+        appBar: const ThemeAppBar(title: "Register",type: AppBarType.clean,),
         body: Padding(
           padding: EdgeInsets.symmetric(vertical: SizeConfig.spacingExtraHorizontal,horizontal: SizeConfig.screenWidth * 0.04),
           child: SingleChildScrollView(child: RegistrationBody(cubit: cubit)),

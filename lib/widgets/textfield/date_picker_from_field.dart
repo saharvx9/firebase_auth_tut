@@ -66,9 +66,9 @@ class _DatePickerOtherPlatformsFromFieldState extends State<DatePickerFromField>
     final now = DateTime.now();
     final result = await showDatePicker(
         context: context,
-        initialDate: now,
+        initialDate: now.subtract(const Duration(days: 7)),
         firstDate: now.subtract(const Duration(days: 365 * 80)),
-        lastDate: now.add(const Duration(days: 7)));
+        lastDate: now);
     if (result == null) return;
     _controller.text = _toText(result) ?? "";
     widget.onDatePick(result);
@@ -108,9 +108,9 @@ class _DatePickerOtherIOSFromFieldState extends State<DatePickerFromField> {
         enableDrag: false,
         isDismissible: false,
         builder: (ctx) => CupertinoDatePicker(
-            initialDateTime: now,
+            initialDateTime: now.subtract(const Duration(days: 7)),
             minimumYear: 1900,
-            maximumDate: now.add(const Duration(days: 7)),
+            maximumDate: now,
             onDateTimeChanged: (result) {
               _controller.text = _toText(result) ?? "";
               widget.onDatePick(result);

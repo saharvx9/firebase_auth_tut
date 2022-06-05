@@ -18,10 +18,9 @@ class PickDisplayImage extends StatelessWidget {
       this.image,
       this.pickImage = true,
       this.onPickImage})
-      : _cubit = PickImageDisplayCubit()..start(image),
+      : _cubit = PickImageDisplayCubit()..start(image,pickImage),
         assert(
-            pickImage == false && image != null ||
-                pickImage == true && onPickImage != null,
+            pickImage == false || pickImage == true && onPickImage != null,
             true),
         super(key: key);
 
@@ -42,11 +41,25 @@ class PickDisplayImage extends StatelessWidget {
           case FileImageState:
             final image = (state as FileImageState).image;
             return _fileImage(image, context);
+          case EmptyImageState:
+            return _emptyImage(context);
           default:
             return _pickImage(context);
         }
       },
     );
+  }
+
+  Widget _emptyImage(BuildContext context){
+    final theme = Theme.of(context);
+    return Container(
+        height: size,
+        width: size,
+        decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: theme.colorScheme.primary,
+            border: Border.all(color: theme.colorScheme.secondary)),
+        child: Icon(Icons.person, size: size));
   }
 
   Widget _pickImage(BuildContext context) {

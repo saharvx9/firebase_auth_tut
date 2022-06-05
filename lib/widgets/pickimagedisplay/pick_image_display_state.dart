@@ -5,6 +5,8 @@ abstract class PickImageDisplayState {}
 
 class PickImageDisplayInitial extends PickImageDisplayState {}
 
+class EmptyImageState extends PickImageDisplayState {}
+
 class ImageUrlState extends PickImageDisplayState {
   final String imageUrl;
   ImageUrlState(this.imageUrl);

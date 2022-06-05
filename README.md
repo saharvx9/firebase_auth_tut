@@ -17,6 +17,10 @@ dont have windows or linux so i could't test it, i think it will work pls notify
 ### Firebase core , Firebase auth , Firebase storage , Firebase firestore
 https://firebase.google.com/docs/flutter/setup?platform=web
 
+
+https://user-images.githubusercontent.com/35892162/172069721-eaeee2b4-9b72-4f16-9271-c8673e04b754.mov
+
+
 ## bLoc
 State mangement Library
 https://pub.dev/packages/flutter_bloc

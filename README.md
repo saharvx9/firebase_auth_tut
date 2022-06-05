@@ -1,17 +1,33 @@
 # firebase_auth_tut
+This repository is for whole flutter community that his main issue based on flutter authentication with **FIREBASE**.
+in adittion using in google and facebook auth front of firebase.
+Support platforms
+- [x] Android
+- [x] Iphone
+- [x] Web
+- [x] MacOs
+- [ ] Windows 
+- [ ] Linux
 
-A new Flutter project.
+dont have windows or linux so i could't test it, i think it will work pls notify if someone want to try.
 
-## Getting Started
+# Main plugin
 
-This project is a starting point for a Flutter application.
+## Firebase 
+### Firebase core , Firebase auth , Firebase storage , Firebase firestore
+https://firebase.google.com/docs/flutter/setup?platform=web
 
-A few resources to get you started if this is your first Flutter project:
+## bLoc
+State mangement Library
+https://pub.dev/packages/flutter_bloc
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## rxDart
+Nice adittion to give more power to bloc (rxDart + bloc = bff ❤️)
+https://pub.dev/packages/rxdart
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-# firebase_auth_tut
+## get_it
+For di (dependency injection)
+https://pub.dev/packages/get_it
+
+
+

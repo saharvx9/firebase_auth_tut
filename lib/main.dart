@@ -21,7 +21,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   _injectModules();
   await GetIt.I.allReady();
-  await dotenv.load(fileName: "assets/variables/.env");
+  await dotenv.load(fileName: "assets/variables/dotenv");
   if (kIsWeb || defaultTargetPlatform == TargetPlatform.macOS) {
     // initialiaze the facebook javascript SDK
     await FacebookAuth.i.webAndDesktopInitialize(

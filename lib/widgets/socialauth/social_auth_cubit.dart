@@ -82,23 +82,29 @@ class SocialAuthCubit extends Cubit<SocialAuthState> {
     emit(FacebookAuthState(ButtonState.loading));
     try {
       final result = await FacebookAuth.i.login(permissions: ['public_profile', 'email']); // by default we request the email and the public profile
-      if (result.status == LoginStatus.success) {
+      switch(result.status){
+
+        case LoginStatus.success:
         // you are logged
-        final accessToken = result.accessToken!;
-        if (kDebugMode) {
-          print("show access token: ${accessToken.token}");
-          print("show grantedPermissions: ${accessToken.grantedPermissions}");
-          print("show message: ${result.message}");
-        }
-        final facebookAuthCredential = FacebookAuthProvider.credential(accessToken.token);
-        emit(UserState(await _loginWithCredential(facebookAuthCredential)));
-      } else {
-        print(result.status);
-        print(result.message);
+          final accessToken = result.accessToken!;
+          final facebookAuthCredential = FacebookAuthProvider.credential(accessToken.token);
+          emit(UserState(await _loginWithCredential(facebookAuthCredential)));
+          break;
+        case LoginStatus.failed:
+          if (kDebugMode) {
+            print(result.status);
+            print(result.message);
+          }
+          break;
+        case LoginStatus.cancelled:
+        case LoginStatus.operationInProgress:
+          break;
       }
     } catch (e, s) {
-      print("show error: $e");
-      print("show stack trace: $s");
+      if (kDebugMode) {
+        print("show error: $e");
+        print("show stack trace: $s");
+      }
     } finally {
       emit(FacebookAuthState(ButtonState.enable));
     }

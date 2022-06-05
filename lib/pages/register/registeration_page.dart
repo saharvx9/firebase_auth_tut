@@ -19,7 +19,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    print("start register body");
     return LayoutBuilder(builder: (context, constraints) {
       return constraints.maxWidth > 600
           ? RegistrationOtherPage(cubit: widget.cubit)

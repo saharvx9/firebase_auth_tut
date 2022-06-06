@@ -21,24 +21,34 @@ dont have windows or linux so i could't test it, i think it will work pls notify
 
 ## Firebase 
 ### Firebase core , Firebase auth , Firebase storage , Firebase firestore
+
 This is the docs:
+
 pls read it carefully!!
+
 https://firebase.google.com/docs/flutter/setup?platform=web
 
 ## bLoc
+
 State mangement Library
 https://pub.dev/packages/flutter_bloc
 
 ## rxDart
+
 Nice adittion to give more power to bloc (rxDart + bloc = bff ❤️)
+
 https://pub.dev/packages/rxdart
 
 ## get_it
+
 For di (dependency injection)
+
 https://pub.dev/packages/get_it
 
 ## Go router
+
 Navigation
+
 [https://pub.dev/packages/get_it](https://pub.dev/packages/go_router)
 
 ## DotEnv

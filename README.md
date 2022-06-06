@@ -5,6 +5,8 @@ https://user-images.githubusercontent.com/35892162/172141993-72ff7264-294c-493c-
 This repository is for whole flutter community that his main issue based on flutter authentication with **FIREBASE**.
 in adittion using in google and facebook auth front of firebase.
 
+**This project use flutter 3!!**
+
 Support platforms
 - [x] Android
 - [x] Iphone
@@ -34,6 +36,13 @@ https://pub.dev/packages/rxdart
 ## get_it
 For di (dependency injection)
 https://pub.dev/packages/get_it
+
+## DotEnv
+envioremnt variables file
+in this porject his path:
+root_project/assets/variables/dotenv
+https://pub.dev/packages/flutter_dotenv
+
 
 
 

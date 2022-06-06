@@ -52,14 +52,14 @@
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>fb1165163140966208</string>
+          <string>fb{facebook_app_id}</string>
         </array>
       </dict>
     </array>
     <key>FacebookAppID</key>
-    <string>1165163140966208</string>
+    <string>{facebook_app_id}</string>
     <key>FacebookClientToken</key>
-    <string>e20f35d909cf47921cb8bd21605a81d8</string>
+    <string>{facebook_client_token}</string>
     <key>FacebookDisplayName</key>
     <string>Fire auth tut</string>
     <key>LSApplicationQueriesSchemes</key>
@@ -77,7 +77,7 @@
     		<key>CFBundleURLSchemes</key>
     		<array>
     			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-    			<string>com.googleusercontent.apps.805703073560-chv584ntiii9d0is8r18mgh8jquuodg0</string>
+    			<string>{REVERSED_CLIENT_ID}</string>
     		</array>
     	</dict>
     </array>

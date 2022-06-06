@@ -1,0 +1,3 @@
+facebook_app_id = "facebook_app_id"
+collection_users = "db/1/users/"
+storage_image_users = "user_logo/"

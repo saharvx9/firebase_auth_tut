@@ -45,13 +45,14 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
-
+	<key>NSPhotoLibraryUsageDescription</key>
+    	<string>For upload image need permission to gallery</string>
 	<key>CFBundleURLTypes</key>
     <array>
       <dict>
         <key>CFBundleURLSchemes</key>
         <array>
-          <string>fb{your-app-id}</string>
+          <string>fb1165163140966208</string>
         </array>
       </dict>
     </array>
@@ -60,7 +61,7 @@
     <key>FacebookClientToken</key>
     <string>e20f35d909cf47921cb8bd21605a81d8</string>
     <key>FacebookDisplayName</key>
-    <string>{your-app-name}</string>
+    <string>Fire auth tut</string>
     <key>LSApplicationQueriesSchemes</key>
     <array>
       <string>fbapi</string>
@@ -68,6 +69,17 @@
       <string>fbauth2</string>
       <string>fbshareextension</string>
     </array>
-
+    <key>CFBundleURLTypes</key>
+    <array>
+    	<dict>
+    		<key>CFBundleTypeRole</key>
+    		<string>Editor</string>
+    		<key>CFBundleURLSchemes</key>
+    		<array>
+    			<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+    			<string>com.googleusercontent.apps.805703073560-chv584ntiii9d0is8r18mgh8jquuodg0</string>
+    		</array>
+    	</dict>
+    </array>
 </dict>
 </plist>

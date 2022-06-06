@@ -64,5 +64,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//cors
-//https://stackoverflow.com/a/66617476/9184066

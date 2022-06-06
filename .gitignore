@@ -123,7 +123,7 @@ app.*.symbols
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 !/dev/ci/**/Gemfile.lock
 !**firebase_auth_tut_android.iml
-*dotenv
 *.firebaserc
-*GoogleService-Info.plist
-*firebase_app_id_file.json
+#*dotenv
+#*GoogleService-Info.plist
+#*firebase_app_id_file.json

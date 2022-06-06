@@ -125,3 +125,4 @@ app.*.symbols
 !**firebase_auth_tut_android.iml
 *dotenv
 *.firebaserc
+*GoogleService-Info.plist
